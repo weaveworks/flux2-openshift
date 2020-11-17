@@ -1,4 +1,6 @@
-# Development
+# Flux2 Openshift
+
+## Development
 
 Below are steps to create a new operator version
 
@@ -12,14 +14,14 @@ Manually copy individual manifests out of `manifests-${NEW_VERSION}.yaml` into r
 The deployments have to be manually added to the `clusterserviceversion.yaml` under `spec.deployments`.
 Bump up `flux.package.yaml`.
 
-# Validate
+## Validate
 
 ```sh
 cd flux/0.2.2
 operator-sdk bundle validate --select-optional name=operatorhub --verbose .
 ```
 
-# Test
+## Test
 
 Setting up OLM
 
@@ -46,10 +48,10 @@ kubectl apply -f test/
 
 Test that Flux2 components are running and test CRDs.
 
-# Submit
+## Submit
 
 ```sh
 cp -r flux ../community-operators/upstream-community-operators/
 ```
 
-Create a PR
+Create PR against community-operators
