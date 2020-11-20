@@ -1,5 +1,15 @@
 # Flux2 Openshift
 
+## Make a release
+
+Automates the below Development and Validate steps
+
+```sh
+npm install # you need nodejs installed
+make version=<VERSION>
+make version=0.2.3
+```
+
 ## Development
 
 Below are steps to create a new operator version
@@ -12,7 +22,6 @@ cp -r flux/0.2.2 flux/$NEW_VERSION
 
 Manually copy individual manifests out of `manifests-${NEW_VERSION}.yaml` into respective files under the new directory.
 The deployments have to be manually added to the `clusterserviceversion.yaml` under `spec.deployments`.
-Bump up `flux.package.yaml`.
 
 ## Validate
 

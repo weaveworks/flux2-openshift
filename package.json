@@ -1,0 +1,26 @@
+{
+  "name": "openshift-flux2",
+  "version": "1.0.0",
+  "description": "## Make a release",
+  "main": "split.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saada/flux2-openshift.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saada/flux2-openshift/issues"
+  },
+  "homepage": "https://github.com/saada/flux2-openshift#readme",
+  "dependencies": {
+    "yaml": "^1.10.0"
+  }
+}
