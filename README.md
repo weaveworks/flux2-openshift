@@ -8,6 +8,8 @@ Automates the below Development and Validate steps
 npm install # you need nodejs installed
 make version=<VERSION>
 make version=0.2.3
+# release multiple versions
+for i in 0.2.3 0.2.4 0.2.5 0.2.6 0.3.0; do make version=$i; done
 ```
 
 ## Development

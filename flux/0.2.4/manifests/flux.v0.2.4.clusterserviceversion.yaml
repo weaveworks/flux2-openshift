@@ -1,7 +1,7 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
-  name: flux.v0.2.2
+  name: flux.v0.2.4
   namespace: flux-system
   annotations:
     alm-examples: |-
@@ -199,7 +199,7 @@ metadata:
     support: FluxCD Community
     operatorframework.io/suggested-namespace: flux-system
 spec:
-  version: 0.2.2
+  version: 0.2.4
   maturity: alpha
   keywords:
     - flux
@@ -231,11 +231,6 @@ spec:
       url: https://github.com/fluxcd/flux2
   customresourcedefinitions:
     owned:
-      - name: alerts.notification.toolkit.fluxcd.io
-        displayName: Alert
-        kind: Alert
-        version: v1beta1
-        description: Alert
       - name: buckets.source.toolkit.fluxcd.io
         displayName: Bucket
         kind: Bucket
@@ -251,11 +246,6 @@ spec:
         kind: HelmChart
         version: v1beta1
         description: HelmChart
-      - name: helmreleases.helm.toolkit.fluxcd.io
-        displayName: HelmRelease
-        kind: HelmRelease
-        version: v2beta1
-        description: HelmRelease
       - name: helmrepositories.source.toolkit.fluxcd.io
         displayName: HelmRepository
         kind: HelmRepository
@@ -266,6 +256,16 @@ spec:
         kind: Kustomization
         version: v1beta1
         description: Kustomization
+      - name: helmreleases.helm.toolkit.fluxcd.io
+        displayName: HelmRelease
+        kind: HelmRelease
+        version: v2beta1
+        description: HelmRelease
+      - name: alerts.notification.toolkit.fluxcd.io
+        displayName: Alert
+        kind: Alert
+        version: v1beta1
+        description: Alert
       - name: providers.notification.toolkit.fluxcd.io
         displayName: Provider
         kind: Provider

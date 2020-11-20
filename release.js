@@ -40,8 +40,8 @@ fs.writeFileSync(`${metadataDir}/annotations.yaml`, YAML.stringify(annotations))
 const csv = YAML.parse(
   fs.readFileSync("./templates/clusterserviceversion.yaml", "utf-8")
 )
-csv.spec.install.spec.deployments = []
-
+const deployments = []
+const crds = []
 documents
   .filter((d) => d.contents)
   .map((d) => YAML.parse(String(d)))
@@ -61,9 +61,10 @@ documents
           name: o.metadata.name,
           spec: o.spec,
         }
-        csv.spec.install.spec.deployments.push(deployment)
+        deployments.push(deployment)
         break
       case "CustomResourceDefinition":
+        crds.push(o)
         const crdFileName = `${o.spec.names.singular}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${crdFileName}`, YAML.stringify(o))
         break
@@ -71,5 +72,16 @@ documents
     // d.contents.items.console.log(String(d)) //.contents.items)
   })
 
-const csvFileName = `flux.${version}.clusterserviceversion.yaml`
+// Update ClusterServiceVersion
+csv.spec.install.spec.deployments = deployments
+csv.metadata.name = `flux.v${version}`
+csv.spec.version = version
+csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
+  name: crd.metadata.name,
+  displayName: crd.spec.names.kind,
+  kind: crd.spec.names.kind,
+  version: crd.spec.versions[0].name,
+  description: crd.spec.names.kind,
+}))
+const csvFileName = `flux.v${version}.clusterserviceversion.yaml`
 fs.writeFileSync(`${manifestsDir}/${csvFileName}`, YAML.stringify(csv))
