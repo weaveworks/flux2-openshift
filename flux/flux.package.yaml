@@ -1,5 +1,0 @@
-packageName: flux
-channels:
-  - currentCSV: flux.v0.2.2
-    name: alpha
-defaultChannel: alpha
