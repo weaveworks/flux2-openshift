@@ -2,8 +2,6 @@
 
 ## Make a release
 
-Automates the below Development and Validate steps
-
 ```sh
 npm install # you need nodejs installed
 make version=<VERSION>
@@ -12,7 +10,15 @@ make version=0.2.3
 for i in 0.2.3 0.2.4 0.2.5 0.2.6 0.3.0; do make version=$i; done
 ```
 
-## Development
+Submit to Operator Hub
+
+```sh
+cp -r flux ../community-operators/upstream-community-operators/
+```
+
+Create PR against [community-operators](https://github.com/operator-framework/community-operators)
+
+## How it works
 
 Below are steps to create a new operator version
 
@@ -25,7 +31,7 @@ cp -r flux/0.2.2 flux/$NEW_VERSION
 Manually copy individual manifests out of `manifests-${NEW_VERSION}.yaml` into respective files under the new directory.
 The deployments have to be manually added to the `clusterserviceversion.yaml` under `spec.deployments`.
 
-## Validate
+We then validate the release
 
 ```sh
 cd flux/0.2.2
@@ -58,11 +64,3 @@ kubectl apply -f test/
 ```
 
 Test that Flux2 components are running and test CRDs.
-
-## Submit
-
-```sh
-cp -r flux ../community-operators/upstream-community-operators/
-```
-
-Create PR against community-operators
