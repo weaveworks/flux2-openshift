@@ -50,10 +50,9 @@ operator-sdk olm install
 Rebuild Catalog
 
 ```sh
-cp catalog.Dockerfile ../community-operators/
 cd ../community-operators
 docker pull quay.io/operator-framework/upstream-registry-builder
-docker build -f catalog.Dockerfile -t saada/olm-catalog:v1 .
+docker build -f upstream.Dockerfile -t saada/olm-catalog:v1 .
 docker push saada/olm-catalog:v1
 ```
 
