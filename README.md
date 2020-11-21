@@ -52,6 +52,7 @@ Rebuild Catalog
 ```sh
 cp catalog.Dockerfile ../community-operators/
 cd ../community-operators
+docker pull quay.io/operator-framework/upstream-registry-builder
 docker build -f catalog.Dockerfile -t saada/olm-catalog:v1 .
 docker push saada/olm-catalog:v1
 ```
@@ -60,7 +61,8 @@ Run test
 
 ```sh
 kubectl delete catalogsource operatorhubio-catalog -n olm
-kubectl apply -f test/
+kubectl apply -f test/catalog-source.yaml
+kubectl apply -f test/operator-subscription.yaml
 ```
 
 Test that Flux2 components are running and test CRDs.

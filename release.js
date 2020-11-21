@@ -2,6 +2,7 @@
 
 const YAML = require("yaml")
 const fs = require("fs")
+const glob = require("glob")
 
 // read manifest file passed as argument
 const manifestFileName = process.argv[2]
@@ -19,7 +20,9 @@ const kindMap = {
 }
 
 // setup directory for new version
-const newVersionDir = `./flux/${version}/`
+const packagePath = "./flux"
+const newVersionDir = `${packagePath}/${version}/`
+
 if (!fs.existsSync(newVersionDir)) {
   fs.mkdirSync(newVersionDir)
 }
@@ -83,5 +86,14 @@ csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
   version: crd.spec.versions[0].name,
   description: crd.spec.names.kind,
 }))
+// figure out which version is its predecessor
+const versions = glob
+  .sync(`${packagePath}/*`, { ignore: `${packagePath}/*.yaml` })
+  .map((f) => f.replace(`${packagePath}/`, "")) // only version name
+  .sort((a, b) => parseFloat(a) - parseFloat(b))
+const newVersionIndex = versions.indexOf(version)
+if (newVersionIndex > 0) {
+  csv.spec.replaces = `flux.v${versions[newVersionIndex - 1]}`
+}
 const csvFileName = `flux.v${version}.clusterserviceversion.yaml`
 fs.writeFileSync(`${manifestsDir}/${csvFileName}`, YAML.stringify(csv))

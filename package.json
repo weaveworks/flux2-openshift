@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/saada/flux2-openshift#readme",
   "dependencies": {
+    "glob": "^7.1.6",
     "yaml": "^1.10.0"
   }
 }
