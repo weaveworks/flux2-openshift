@@ -191,7 +191,7 @@ metadata:
           }
         }
       ]
-    capabilities: Basic Install
+    capabilities: Deep Insights
     categories: Integration & Delivery
     certified: "false"
     description: Open and extensible continuous delivery solution for Kubernetes.
