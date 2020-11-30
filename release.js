@@ -86,14 +86,15 @@ csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
   version: crd.spec.versions[0].name,
   description: crd.spec.names.kind,
 }))
+// TODO: try to remove the replaces requirements
 // figure out which version is its predecessor
-const versions = glob
-  .sync(`${packagePath}/*`, { ignore: `${packagePath}/*.yaml` })
-  .map((f) => f.replace(`${packagePath}/`, "")) // only version name
-  .sort((a, b) => parseFloat(a) - parseFloat(b))
-const newVersionIndex = versions.indexOf(version)
-if (newVersionIndex > 0) {
-  csv.spec.replaces = `flux.v${versions[newVersionIndex - 1]}`
-}
+// const versions = glob
+//   .sync(`${packagePath}/*`, { ignore: `${packagePath}/*.yaml` })
+//   .map((f) => f.replace(`${packagePath}/`, "")) // only version name
+//   .sort((a, b) => parseFloat(a) - parseFloat(b))
+// const newVersionIndex = versions.indexOf(version)
+// if (newVersionIndex > 0) {
+//   csv.spec.replaces = `flux.v${versions[newVersionIndex - 1]}`
+// }
 const csvFileName = `flux.v${version}.clusterserviceversion.yaml`
 fs.writeFileSync(`${manifestsDir}/${csvFileName}`, YAML.stringify(csv))

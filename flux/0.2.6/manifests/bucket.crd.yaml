@@ -94,6 +94,10 @@ spec:
                         apiVersion, kind, uid?"
                       type: string
                   type: object
+                suspend:
+                  description: This flag tells the controller to suspend the reconciliation of
+                    this source.
+                  type: boolean
                 timeout:
                   default: 20s
                   description: The timeout for download operations, defaults to 20s.

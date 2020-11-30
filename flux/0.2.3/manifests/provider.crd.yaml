@@ -84,6 +84,7 @@ spec:
                     - github
                     - gitlab
                     - bitbucket
+                    - azuredevops
                   type: string
                 username:
                   description: Bot username for this provider

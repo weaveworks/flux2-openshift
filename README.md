@@ -6,8 +6,8 @@
 npm install # you need nodejs installed
 make version=<VERSION>
 make version=0.2.3
-# release multiple versions
-for i in 0.2.3 0.2.4 0.2.5 0.2.6 0.3.0; do make version=$i; done
+# release and publish all versions. To add new version, simply add a new flux/<version> directory with the desired version and let the script generate everything
+make all
 ```
 
 Submit to Operator Hub
@@ -40,20 +40,22 @@ operator-sdk bundle validate --select-optional name=operatorhub --verbose .
 
 ## Test
 
-Setting up OLM
+Set up either kind or crc cluster
 
 ```sh
+# A) KIND CLUSTER
 kind create cluster
 operator-sdk olm install
+# B) CRC CLUSTER
+crc setup
+crc start --nameserver=1.1.1.1
 ```
 
 Rebuild Catalog
 
 ```sh
-cd ../community-operators
-docker pull quay.io/operator-framework/upstream-registry-builder
-docker build -f upstream.Dockerfile -t saada/olm-catalog:v1 .
-docker push saada/olm-catalog:v1
+docker build -t saada/olm-catalog:v3 .
+docker push saada/olm-catalog:v3
 ```
 
 Run test

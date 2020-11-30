@@ -1,8 +1,14 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-  name: flux
-  namespace: olm
+  name: custom
+  namespace: openshift-marketplace
 spec:
+  displayName: custom
+  description: custom
+  publisher: custom
   sourceType: grpc
-  image: saada/olm-catalog:v1
+  image: saada/flux-index:latest
+  updateStrategy:
+    registryPoll:
+      interval: 1m

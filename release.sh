@@ -19,3 +19,7 @@ flux install --version="$version" --export --dry-run >"$manifest"
 ./release.js "$manifest" "$version"
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
 rm "$manifest"
+
+# docker build and push
+docker build -t saada/flux-catalog:bundle-v"${version}" -f bundle.Dockerfile flux/"${version}"
+docker push saada/flux-catalog:bundle-v"${version}"
