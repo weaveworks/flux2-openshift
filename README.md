@@ -1,5 +1,11 @@
 # Flux2 Openshift
 
+## Prerequisites
+
+- opm 1.5.2
+- operator-sdk
+- do
+
 ## Make a release
 
 ```sh
