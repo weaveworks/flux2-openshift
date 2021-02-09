@@ -1,4 +1,6 @@
 release:
 	./release.sh $(version)
-all:
-	./all.sh
+generate:
+	./generate.sh
+opm-index:
+	./opm-index.sh

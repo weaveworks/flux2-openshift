@@ -55,6 +55,14 @@ spec:
             spec:
               description: GitRepositorySpec defines the desired state of a Git repository.
               properties:
+                gitImplementation:
+                  default: go-git
+                  description: Determines which git client library to use. Defaults to go-git,
+                    valid values are ('go-git', 'libgit2').
+                  enum:
+                    - go-git
+                    - libgit2
+                  type: string
                 ignore:
                   description: Ignore overrides the set of excluded patterns in the .sourceignore
                     format (which is the same as .gitignore). If not provided, a
@@ -90,11 +98,10 @@ spec:
                     identity, identity.pub and known_hosts fields.
                   properties:
                     name:
-                      description: "Name of the referent. More info:
-                        https://kubernetes.io/docs/concepts/overview/working-wi\
-                        th-objects/names/#names TODO: Add other useful fields.
-                        apiVersion, kind, uid?"
+                      description: Name of the referent
                       type: string
+                  required:
+                    - name
                   type: object
                 suspend:
                   description: This flag tells the controller to suspend the reconciliation of
@@ -123,11 +130,10 @@ spec:
                         authors.
                       properties:
                         name:
-                          description: "Name of the referent. More info:
-                            https://kubernetes.io/docs/concepts/overview/workin\
-                            g-with-objects/names/#names TODO: Add other useful
-                            fields. apiVersion, kind, uid?"
+                          description: Name of the referent
                           type: string
+                      required:
+                        - name
                       type: object
                   required:
                     - mode

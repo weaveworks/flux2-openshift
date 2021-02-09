@@ -214,11 +214,10 @@ spec:
                         reconciling the HelmRelease.
                       properties:
                         name:
-                          description: "Name of the referent. More info:
-                            https://kubernetes.io/docs/concepts/overview/workin\
-                            g-with-objects/names/#names TODO: Add other useful
-                            fields. apiVersion, kind, uid?"
+                          description: Name of the referent
                           type: string
+                      required:
+                        - name
                       type: object
                   type: object
                 maxHistory:
@@ -263,6 +262,12 @@ spec:
                 serviceAccountName:
                   description: The name of the Kubernetes service account to impersonate when
                     reconciling this HelmRelease.
+                  type: string
+                storageNamespace:
+                  description: StorageNamespace used for the Helm storage. Defaults to the
+                    namespace of the HelmRelease.
+                  maxLength: 63
+                  minLength: 1
                   type: string
                 suspend:
                   description: Suspend tells the controller to suspend reconciliation for this

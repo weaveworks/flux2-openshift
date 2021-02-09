@@ -4,16 +4,17 @@
 
 - opm 1.5.2
 - operator-sdk
-- do
+- docker (optional)
 
 ## Make a release
 
 ```sh
 npm install # you need nodejs installed
-make version=<VERSION>
-make version=0.2.3
+make release version=<VERSION>
+make release version=0.2.3
 # release and publish all versions. To add new version, simply add a new flux/<version> directory with the desired version and let the script generate everything
-make all
+# example: mkdir flux/0.5.{0..9} flux/0.6.{0..3} flux/0.7.{0..7}
+make generate
 ```
 
 Submit to Operator Hub

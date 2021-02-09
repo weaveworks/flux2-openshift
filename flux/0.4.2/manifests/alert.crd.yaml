@@ -79,6 +79,9 @@ spec:
                           - HelmRelease
                           - HelmChart
                           - HelmRepository
+                          - ImageRepository
+                          - ImagePolicy
+                          - ImageUpdateAutomation
                         type: string
                       name:
                         description: Name of the referent
@@ -98,12 +101,14 @@ spec:
                   description: Send events using this provider
                   properties:
                     name:
-                      description: "Name of the referent. More info:
-                        https://kubernetes.io/docs/concepts/overview/working-wi\
-                        th-objects/names/#names TODO: Add other useful fields.
-                        apiVersion, kind, uid?"
+                      description: Name of the referent
                       type: string
+                  required:
+                    - name
                   type: object
+                summary:
+                  description: Short description of the impact and affected cluster.
+                  type: string
                 suspend:
                   description: This flag tells the controller to suspend subsequent events
                     dispatching. Defaults to false.

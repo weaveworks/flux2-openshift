@@ -64,14 +64,14 @@ spec:
                   pattern: ^(http|https)://
                   type: string
                 secretRef:
-                  description: Secret reference containing the provider webhook URL
+                  description: Secret reference containing the provider webhook URL using
+                    "address" as data key
                   properties:
                     name:
-                      description: "Name of the referent. More info:
-                        https://kubernetes.io/docs/concepts/overview/working-wi\
-                        th-objects/names/#names TODO: Add other useful fields.
-                        apiVersion, kind, uid?"
+                      description: Name of the referent
                       type: string
+                  required:
+                    - name
                   type: object
                 type:
                   description: Type of provider

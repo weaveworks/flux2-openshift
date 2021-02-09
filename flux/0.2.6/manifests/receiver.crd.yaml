@@ -76,6 +76,9 @@ spec:
                           - HelmRelease
                           - HelmChart
                           - HelmRepository
+                          - ImageRepository
+                          - ImagePolicy
+                          - ImageUpdateAutomation
                         type: string
                       name:
                         description: Name of the referent
@@ -96,11 +99,10 @@ spec:
                     authenticity
                   properties:
                     name:
-                      description: "Name of the referent. More info:
-                        https://kubernetes.io/docs/concepts/overview/working-wi\
-                        th-objects/names/#names TODO: Add other useful fields.
-                        apiVersion, kind, uid?"
+                      description: Name of the referent
                       type: string
+                  required:
+                    - name
                   type: object
                 suspend:
                   description: This flag tells the controller to suspend subsequent events
@@ -111,10 +113,15 @@ spec:
                     and payload deserialization.
                   enum:
                     - generic
+                    - generic-hmac
                     - github
                     - gitlab
                     - bitbucket
                     - harbor
+                    - dockerhub
+                    - quay
+                    - gcr
+                    - nexus
                   type: string
               required:
                 - resources

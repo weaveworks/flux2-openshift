@@ -231,6 +231,11 @@ spec:
       url: https://github.com/fluxcd/flux2
   customresourcedefinitions:
     owned:
+      - name: alerts.notification.toolkit.fluxcd.io
+        displayName: Alert
+        kind: Alert
+        version: v1beta1
+        description: Alert
       - name: buckets.source.toolkit.fluxcd.io
         displayName: Bucket
         kind: Bucket
@@ -246,6 +251,11 @@ spec:
         kind: HelmChart
         version: v1beta1
         description: HelmChart
+      - name: helmreleases.helm.toolkit.fluxcd.io
+        displayName: HelmRelease
+        kind: HelmRelease
+        version: v2beta1
+        description: HelmRelease
       - name: helmrepositories.source.toolkit.fluxcd.io
         displayName: HelmRepository
         kind: HelmRepository
@@ -256,16 +266,6 @@ spec:
         kind: Kustomization
         version: v1beta1
         description: Kustomization
-      - name: helmreleases.helm.toolkit.fluxcd.io
-        displayName: HelmRelease
-        kind: HelmRelease
-        version: v2beta1
-        description: HelmRelease
-      - name: alerts.notification.toolkit.fluxcd.io
-        displayName: Alert
-        kind: Alert
-        version: v1beta1
-        description: Alert
       - name: providers.notification.toolkit.fluxcd.io
         displayName: Provider
         kind: Provider
@@ -325,138 +325,6 @@ spec:
                 - "*"
           serviceAccountName: default
       deployments:
-        - name: source-controller
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: source-controller
-            template:
-              metadata:
-                annotations:
-                  prometheus.io/port: "8080"
-                  prometheus.io/scrape: "true"
-                labels:
-                  app: source-controller
-              spec:
-                containers:
-                  - args:
-                      - --events-addr=http://notification-controller/
-                      - --watch-all-namespaces=true
-                      - --log-level=info
-                      - --log-json
-                      - --enable-leader-election
-                      - --storage-path=/data
-                    env:
-                      - name: RUNTIME_NAMESPACE
-                        valueFrom:
-                          fieldRef:
-                            fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/source-controller:v0.4.1
-                    imagePullPolicy: IfNotPresent
-                    livenessProbe:
-                      httpGet:
-                        path: /
-                        port: http
-                    name: manager
-                    ports:
-                      - containerPort: 9090
-                        name: http
-                      - containerPort: 8080
-                        name: http-prom
-                    readinessProbe:
-                      httpGet:
-                        path: /
-                        port: http
-                    resources:
-                      limits:
-                        cpu: 1000m
-                        memory: 1Gi
-                      requests:
-                        cpu: 50m
-                        memory: 64Mi
-                    securityContext:
-                      allowPrivilegeEscalation: false
-                      readOnlyRootFilesystem: true
-                    volumeMounts:
-                      - mountPath: /data
-                        name: data
-                      - mountPath: /tmp
-                        name: tmp
-                nodeSelector:
-                  kubernetes.io/arch: amd64
-                  kubernetes.io/os: linux
-                terminationGracePeriodSeconds: 10
-                volumes:
-                  - emptyDir: {}
-                    name: data
-                  - emptyDir: {}
-                    name: tmp
-        - name: kustomize-controller
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: kustomize-controller
-            template:
-              metadata:
-                annotations:
-                  prometheus.io/port: "8080"
-                  prometheus.io/scrape: "true"
-                labels:
-                  app: kustomize-controller
-              spec:
-                containers:
-                  - args:
-                      - --events-addr=http://notification-controller/
-                      - --watch-all-namespaces=true
-                      - --log-level=info
-                      - --log-json
-                      - --enable-leader-election
-                    env:
-                      - name: RUNTIME_NAMESPACE
-                        valueFrom:
-                          fieldRef:
-                            fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/kustomize-controller:v0.4.0
-                    imagePullPolicy: IfNotPresent
-                    livenessProbe:
-                      httpGet:
-                        path: /healthz
-                        port: healthz
-                    name: manager
-                    ports:
-                      - containerPort: 8080
-                        name: http-prom
-                      - containerPort: 9440
-                        name: healthz
-                        protocol: TCP
-                    readinessProbe:
-                      httpGet:
-                        path: /readyz
-                        port: healthz
-                    resources:
-                      limits:
-                        cpu: 1000m
-                        memory: 1Gi
-                      requests:
-                        cpu: 100m
-                        memory: 64Mi
-                    securityContext:
-                      allowPrivilegeEscalation: false
-                      readOnlyRootFilesystem: true
-                    volumeMounts:
-                      - mountPath: /tmp
-                        name: temp
-                nodeSelector:
-                  kubernetes.io/arch: amd64
-                  kubernetes.io/os: linux
-                securityContext:
-                  fsGroup: 1337
-                terminationGracePeriodSeconds: 10
-                volumes:
-                  - emptyDir: {}
-                    name: temp
         - name: helm-controller
           spec:
             replicas: 1
@@ -476,14 +344,14 @@ spec:
                       - --events-addr=http://notification-controller/
                       - --watch-all-namespaces=true
                       - --log-level=info
-                      - --log-json
+                      - --log-encoding=json
                       - --enable-leader-election
                     env:
                       - name: RUNTIME_NAMESPACE
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/helm-controller:v0.4.1
+                    image: ghcr.io/fluxcd/helm-controller:v0.6.1
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -514,9 +382,74 @@ spec:
                       - mountPath: /tmp
                         name: temp
                 nodeSelector:
-                  kubernetes.io/arch: amd64
                   kubernetes.io/os: linux
-                terminationGracePeriodSeconds: 10
+                serviceAccountName: helm-controller
+                terminationGracePeriodSeconds: 600
+                volumes:
+                  - emptyDir: {}
+                    name: temp
+        - name: kustomize-controller
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: kustomize-controller
+            template:
+              metadata:
+                annotations:
+                  prometheus.io/port: "8080"
+                  prometheus.io/scrape: "true"
+                labels:
+                  app: kustomize-controller
+              spec:
+                containers:
+                  - args:
+                      - --events-addr=http://notification-controller/
+                      - --watch-all-namespaces=true
+                      - --log-level=info
+                      - --log-encoding=json
+                      - --enable-leader-election
+                    env:
+                      - name: RUNTIME_NAMESPACE
+                        valueFrom:
+                          fieldRef:
+                            fieldPath: metadata.namespace
+                    image: ghcr.io/fluxcd/kustomize-controller:v0.7.4
+                    imagePullPolicy: IfNotPresent
+                    livenessProbe:
+                      httpGet:
+                        path: /healthz
+                        port: healthz
+                    name: manager
+                    ports:
+                      - containerPort: 8080
+                        name: http-prom
+                      - containerPort: 9440
+                        name: healthz
+                        protocol: TCP
+                    readinessProbe:
+                      httpGet:
+                        path: /readyz
+                        port: healthz
+                    resources:
+                      limits:
+                        cpu: 1000m
+                        memory: 1Gi
+                      requests:
+                        cpu: 100m
+                        memory: 64Mi
+                    securityContext:
+                      allowPrivilegeEscalation: false
+                      readOnlyRootFilesystem: true
+                    volumeMounts:
+                      - mountPath: /tmp
+                        name: temp
+                nodeSelector:
+                  kubernetes.io/os: linux
+                securityContext:
+                  fsGroup: 1337
+                serviceAccountName: kustomize-controller
+                terminationGracePeriodSeconds: 60
                 volumes:
                   - emptyDir: {}
                     name: temp
@@ -538,14 +471,14 @@ spec:
                   - args:
                       - --watch-all-namespaces=true
                       - --log-level=info
-                      - --log-json
+                      - --log-encoding=json
                       - --enable-leader-election
                     env:
                       - name: RUNTIME_NAMESPACE
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/notification-controller:v0.4.0
+                    image: ghcr.io/fluxcd/notification-controller:v0.7.1
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -580,12 +513,84 @@ spec:
                       - mountPath: /tmp
                         name: temp
                 nodeSelector:
-                  kubernetes.io/arch: amd64
                   kubernetes.io/os: linux
+                serviceAccountName: notification-controller
                 terminationGracePeriodSeconds: 10
                 volumes:
                   - emptyDir: {}
                     name: temp
+        - name: source-controller
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: source-controller
+            strategy:
+              type: Recreate
+            template:
+              metadata:
+                annotations:
+                  prometheus.io/port: "8080"
+                  prometheus.io/scrape: "true"
+                labels:
+                  app: source-controller
+              spec:
+                containers:
+                  - args:
+                      - --events-addr=http://notification-controller/
+                      - --watch-all-namespaces=true
+                      - --log-level=info
+                      - --log-encoding=json
+                      - --enable-leader-election
+                      - --storage-path=/data
+                      - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.cluster.local.
+                    env:
+                      - name: RUNTIME_NAMESPACE
+                        valueFrom:
+                          fieldRef:
+                            fieldPath: metadata.namespace
+                    image: ghcr.io/fluxcd/source-controller:v0.7.4
+                    imagePullPolicy: IfNotPresent
+                    livenessProbe:
+                      httpGet:
+                        path: /healthz
+                        port: healthz
+                    name: manager
+                    ports:
+                      - containerPort: 9090
+                        name: http
+                      - containerPort: 8080
+                        name: http-prom
+                      - containerPort: 9440
+                        name: healthz
+                    readinessProbe:
+                      httpGet:
+                        path: /
+                        port: http
+                    resources:
+                      limits:
+                        cpu: 1000m
+                        memory: 1Gi
+                      requests:
+                        cpu: 50m
+                        memory: 64Mi
+                    securityContext:
+                      allowPrivilegeEscalation: false
+                      readOnlyRootFilesystem: true
+                    volumeMounts:
+                      - mountPath: /data
+                        name: data
+                      - mountPath: /tmp
+                        name: tmp
+                nodeSelector:
+                  kubernetes.io/os: linux
+                serviceAccountName: source-controller
+                terminationGracePeriodSeconds: 10
+                volumes:
+                  - emptyDir: {}
+                    name: data
+                  - emptyDir: {}
+                    name: tmp
     strategy: deployment
   installModes:
     - type: OwnNamespace
