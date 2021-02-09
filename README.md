@@ -20,7 +20,15 @@ make generate
 Submit to Operator Hub
 
 ```sh
-cp -r flux ../community-operators/upstream-community-operators/
+cd ../community-operators # make sure it's a clone of your own fork of https://github.com/operator-framework/community-operators
+git checkout master
+git pull
+git checkout -b flux-releases-0.7.7
+cp -r ../openshift-flux2/flux ./upstream-community-operators/
+git add upstream-community-operators/flux
+git commit -m 'release flux versions 0.4.3-0.7.7'
+git commit --amend --no-edit --signoff
+git push -u fork flux-releases-0.7.7
 ```
 
 Create PR against [community-operators](https://github.com/operator-framework/community-operators)
