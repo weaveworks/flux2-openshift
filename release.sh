@@ -15,7 +15,9 @@ if ! which flux; then
 fi
 
 manifest="manifests-$version.yaml"
-flux install --version="$version" --export --dry-run >"$manifest"
+flux install --version="$version" \
+  --components-extra=image-reflector-controller,image-automation-controller \
+  --export --dry-run >"$manifest"
 ./release.js "$manifest" "$version"
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
 rm "$manifest"
