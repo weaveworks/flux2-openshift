@@ -3,6 +3,7 @@
 const YAML = require("yaml")
 const fs = require("fs")
 const glob = require("glob")
+const { exit } = require("process")
 
 // read manifest file passed as argument
 const manifestFileName = process.argv[2]
@@ -17,6 +18,8 @@ const kindMap = {
   Deployment: "deployment",
   CustomResourceDefinition: "crd",
   Service: "service",
+  ClusterRole: "clusterrole",
+  ServiceAccount: "serviceaccount",
 }
 
 // setup directory for new version
@@ -55,7 +58,9 @@ documents
       case "Role":
       case "RoleBinding":
       case "ClusterRoleBinding":
+      case "ClusterRole":
       case "Service":
+      case "ServiceAccount":
         const filename = `${o.metadata.name}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${filename}`, YAML.stringify(o))
         break
@@ -70,6 +75,14 @@ documents
         crds.push(o)
         const crdFileName = `${o.spec.names.singular}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${crdFileName}`, YAML.stringify(o))
+        break
+      default:
+        console.warn(
+          "UNSUPPORTED KIND - you must explicitly ignore it or handle it",
+          o.kind,
+          o.metadata.name
+        )
+        process.exit(1)
         break
     }
     // d.contents.items.console.log(String(d)) //.contents.items)
