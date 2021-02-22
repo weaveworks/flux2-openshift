@@ -53,7 +53,19 @@ cd flux/0.2.2
 operator-sdk bundle validate --select-optional name=operatorhub --verbose .
 ```
 
-## Test
+## Test using RedHat's test suite
+
+Make sure you have Docker running.
+If you have a Mac, make sure you have GNU `sed` in your path working
+
+```sh
+bash <(curl -sL https://cutt.ly/WhkV76k) \
+all \ # you can also set this to kiwi test suite
+upstream-community-operators/flux/0.8.2 \ # file path
+https://github.com/saada/community-operators flux-releases-0.7.7 # branch name
+```
+
+## Test with CRC or KIND
 
 Set up either kind or crc cluster
 
