@@ -92,6 +92,7 @@ documents
 csv.spec.install.spec.deployments = deployments
 csv.metadata.name = `flux.v${version}`
 csv.spec.version = version
+csv.spec.minKubeVersion = "1.16.0"
 csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
   name: crd.metadata.name,
   displayName: crd.spec.names.kind,
