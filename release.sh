@@ -2,22 +2,23 @@
 set -euo pipefail
 
 version=${1:-master}
-echo "$version"
+echo "Flux version: $version"
 
-if ! which flux; then
-  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    echo "os detected: linux"
-    curl -s https://toolkit.fluxcd.io/install.sh | sudo bash
-  elif [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "os detected: macOS"
-    brew install fluxcd/tap/flux
-  fi
-fi
+echo "Building the CLI image ..."
+docker build -t flux-cli:v${version} \
+  --build-arg FLUXCLI_VER=${version} \
+  -f Dockerfile.fluxcli .
 
+echo "Generating the manifests using the built CLI ..."
 manifest="manifests-$version.yaml"
-flux install --version="$version" \
+docker run --rm -it flux-cli:v${version} install --version="$version" \
   --components-extra=image-reflector-controller,image-automation-controller \
-  --export --dry-run >"$manifest"
+  --export --dry-run > "$manifest"
+
+echo "Calling release js ..."
 ./release.js "$manifest" "$version"
+
+echo "Bundle with operator-sdk ..."
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
+
 rm "$manifest"
