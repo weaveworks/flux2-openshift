@@ -2,10 +2,10 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: flux-subscription
-  namespace: openshift-marketplace # all namespaces
+  namespace: flux-system
 spec:
-  channel: alpha
+  channel: stable
   name: flux
-  startingCSV: flux.v0.2.4
+  startingCSV: flux.v0.13.4
   source: custom
-  sourceNamespace: openshift-marketplace
+  sourceNamespace: flux-system

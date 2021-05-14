@@ -2,13 +2,13 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: custom
-  namespace: openshift-marketplace
+  namespace: flux-system
 spec:
   displayName: custom
   description: custom
   publisher: custom
   sourceType: grpc
-  image: saada/flux-index:latest
+  image: chanwit/flux-index:latest
   updateStrategy:
     registryPoll:
-      interval: 1m
+      interval: 30m
