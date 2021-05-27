@@ -8,7 +8,7 @@ spec:
   description: custom
   publisher: custom
   sourceType: grpc
-  image: chanwit/flux-index:latest
+  image: quay.io/openshift-fluxv2-poc/flux-index:latest
   updateStrategy:
     registryPoll:
       interval: 30m
