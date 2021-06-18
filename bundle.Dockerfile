@@ -8,7 +8,7 @@ LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
 LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
 LABEL operators.operatorframework.io.bundle.package.v1=flux
 
-LABEL com.redhat.openshift.versions="v4.5-v4.7"
+LABEL com.redhat.openshift.versions="v4.6-v4.8"
 LABEL com.redhat.delivery.operator.bundle=true
 LABEL com.redhat.delivery.backport=true
 
