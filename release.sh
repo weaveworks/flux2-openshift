@@ -9,7 +9,10 @@ manifest="manifests-$version.yaml"
 
 docker run --rm -it ghcr.io/fluxcd/flux-cli:v${version} install --version="$version" \
   --components-extra=image-reflector-controller,image-automation-controller \
-  --export --dry-run > "$manifest"
+  --export --dry-run > gotk-components.yaml
+
+# require kustomize 4.1.3
+kustomize build . > "$manifest"
 
 echo "Calling release js ..."
 ./release.js "$manifest" "$version"
