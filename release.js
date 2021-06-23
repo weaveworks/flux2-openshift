@@ -91,7 +91,7 @@ documents
 // Update ClusterServiceVersion
 csv.spec.install.spec.deployments = deployments
 csv.metadata.name = `flux.v${version}`
-csv.metadata.annotations.containerImage = "ghcr.io/fluxcd/source-controller:v0.15.0"
+csv.metadata.annotations.containerImage = "ghcr.io/fluxcd/source-controller:v0.15.2"
 csv.spec.version = version
 csv.spec.minKubeVersion = "1.16.0"
 csv.spec.maturity = "stable"
