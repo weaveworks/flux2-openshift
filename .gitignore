@@ -3,3 +3,4 @@ node_modules
 manifests-*.yaml
 bundle_*
 community-operators/
+gotk-components.yaml
