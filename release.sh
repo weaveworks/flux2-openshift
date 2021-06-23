@@ -20,4 +20,6 @@ echo "Calling release js ..."
 echo "Bundle with operator-sdk ..."
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
 
+
+rm gotk-components.yaml
 rm "$manifest"
