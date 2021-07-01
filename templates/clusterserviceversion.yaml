@@ -188,11 +188,11 @@ metadata:
           }
         },
         {
-          "apiVersion": "image.toolkit.fluxcd.io/v1alpha1",
+          "apiVersion": "image.toolkit.fluxcd.io/v1beta1",
           "kind": "ImageRepository",
           "metadata": {
               "name": "podinfo",
-              "namespace": "default"
+              "namespace": "flux-system"
           },
           "spec": {
               "image": "ghcr.io/stefanprodan/podinfo",
@@ -200,11 +200,11 @@ metadata:
           }
         },
         {
-          "apiVersion": "image.toolkit.fluxcd.io/v1alpha1",
+          "apiVersion": "image.toolkit.fluxcd.io/v1beta1",
           "kind": "ImagePolicy",
           "metadata": {
               "name": "podinfo",
-              "namespace": "default"
+              "namespace": "flux-system"
           },
           "spec": {
               "imageRepositoryRef": {
@@ -218,28 +218,39 @@ metadata:
           }
         },
         {
-          "apiVersion": "image.toolkit.fluxcd.io/v1alpha1",
+          "apiVersion": "image.toolkit.fluxcd.io/v1beta1",
           "kind": "ImageUpdateAutomation",
           "metadata": {
-              "name": "flux-system",
-              "namespace": "default"
+            "name": "flux-system",
+            "namespace": "flux-system"
           },
           "spec": {
+            "interval": "1m0s",
+            "sourceRef": {
+              "kind": "GitRepository",
+              "name": "flux-system"
+            },
+            "git": {
               "checkout": {
-                "branch": "main",
-                "gitRepositoryRef": {
-                    "name": "flux-system"
+                "ref": {
+                  "branch": "main"
                 }
               },
               "commit": {
-                "authorEmail": "fluxcdbot@users.noreply.github.com",
-                "authorName": "fluxcdbot",
-                "messageTemplate": "[ci skip] update image"
+                "author": {
+                  "email": "fluxcdbot@users.noreply.github.com",
+                  "name": "fluxcdbot"
+                },
+                "messageTemplate": "{{range .Updated.Images}}{{println .}}{{end}}"
               },
-              "interval": "1m0s",
-              "update": {
-                "strategy": "Setters"
+              "push": {
+                "branch": "main"
               }
+            },
+            "update": {
+              "path": "./clusters/my-cluster",
+              "strategy": "Setters"
+            }
           }
         }
       ]
@@ -348,9 +359,32 @@ spec:
     - Seamless integration with Git providers (GitHub, GitLab, Bitbucket)
     - Interoperability with Cluster API (CAPI) providers
 
-    ### Prerequisites
+    ### Optional Steps for OpenShift on AWS
 
-    Before installing Flux, perform the following steps to bind Flux to the `privileged` SecurityContextConstraint (SCC). This applies to installation via OC's OLM or via flux CLI.
+    Security Context with fsGroup=1337 is required to allow controller pods to connect to a certain list of AWS services.
+    To do so, please specifiy a patch for gotk-components.yaml using the following Kustomization file, for example.
+
+    ```yaml
+    apiVersion: kustomize.config.k8s.io/v1beta1
+    kind: Kustomization
+    resources:
+    - gotk-components.yaml
+    patches:
+      - patch: |-
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: all
+          spec:
+            template:
+              spec:
+                securityContext:
+                  fsGroup: 1337
+        target:
+          kind: Deployment
+    ```
+
+    Then before installing Flux, please also perform the following steps to bind Flux to the `privileged` SecurityContextConstraint (SCC). This applies to installation via OC's OLM or via flux CLI.
 
     ```sh
     # replace default "flux-system" with the project/namespace name for your flux installation

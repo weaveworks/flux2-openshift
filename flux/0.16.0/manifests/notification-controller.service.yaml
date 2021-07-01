@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: flux-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.15.3
+    app.kubernetes.io/version: 0.16.0
     control-plane: controller
   name: notification-controller
 spec:
