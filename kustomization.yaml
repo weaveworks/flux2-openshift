@@ -8,6 +8,8 @@ patches:
       kind: Deployment
       metadata:
         name: all
+        labels:
+          app.kubernetes.io/instance: flux-system
       spec:
         template:
           spec:
