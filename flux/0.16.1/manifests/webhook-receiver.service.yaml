@@ -4,15 +4,15 @@ metadata:
   labels:
     app.kubernetes.io/instance: flux-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.16.0
+    app.kubernetes.io/version: 0.16.1
     control-plane: controller
-  name: notification-controller
+  name: webhook-receiver
 spec:
   ports:
     - name: http
       port: 80
       protocol: TCP
-      targetPort: http
+      targetPort: http-webhook
   selector:
     app: notification-controller
   type: ClusterIP
