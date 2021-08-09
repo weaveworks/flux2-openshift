@@ -67,6 +67,7 @@ documents
       case "Deployment":
         let deployment = {
           name: o.metadata.name,
+          label: o.metadata.labels,
           spec: o.spec,
         }
         deployments.push(deployment)
