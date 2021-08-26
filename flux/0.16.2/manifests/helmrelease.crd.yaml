@@ -7,7 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: flux-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.16.1
+    app.kubernetes.io/version: 0.16.2
   name: helmreleases.helm.toolkit.fluxcd.io
 spec:
   group: helm.toolkit.fluxcd.io
@@ -623,6 +623,8 @@ spec:
                 - interval
               type: object
             status:
+              default:
+                observedGeneration: -1
               description: HelmReleaseStatus defines the observed state of a HelmRelease.
               properties:
                 conditions:

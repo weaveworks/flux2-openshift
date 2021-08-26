@@ -1,7 +1,7 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
-  name: flux.v0.16.1
+  name: flux.v0.16.2
   namespace: flux-system
   annotations:
     alm-examples: >-
@@ -260,9 +260,9 @@ metadata:
     description: Flux is a Continuous Delivery solution for Kubernetes.
     support: FluxCD Community
     operatorframework.io/suggested-namespace: flux-system
-    containerImage: ghcr.io/fluxcd/source-controller:v0.15.3
+    containerImage: ghcr.io/fluxcd/source-controller:v0.15.4
 spec:
-  version: 0.16.1
+  version: 0.16.2
   maturity: stable
   keywords:
     - flux
@@ -521,6 +521,11 @@ spec:
           serviceAccountName: default
       deployments:
         - name: helm-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -546,7 +551,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/helm-controller:v0.11.1
+                    image: ghcr.io/fluxcd/helm-controller:v0.11.2
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -584,6 +589,11 @@ spec:
                   - emptyDir: {}
                     name: temp
         - name: image-automation-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -609,7 +619,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/image-automation-controller:v0.14.0
+                    image: ghcr.io/fluxcd/image-automation-controller:v0.14.1
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -647,6 +657,11 @@ spec:
                   - emptyDir: {}
                     name: temp
         - name: image-reflector-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -672,7 +687,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/image-reflector-controller:v0.11.0
+                    image: ghcr.io/fluxcd/image-reflector-controller:v0.11.1
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -714,6 +729,11 @@ spec:
                   - emptyDir: {}
                     name: data
         - name: kustomize-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -739,7 +759,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/kustomize-controller:v0.13.2
+                    image: ghcr.io/fluxcd/kustomize-controller:v0.13.3
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -777,6 +797,11 @@ spec:
                   - emptyDir: {}
                     name: temp
         - name: notification-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -801,7 +826,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/notification-controller:v0.15.0
+                    image: ghcr.io/fluxcd/notification-controller:v0.15.1
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
@@ -843,6 +868,11 @@ spec:
                   - emptyDir: {}
                     name: temp
         - name: source-controller
+          label:
+            app.kubernetes.io/instance: flux-system
+            app.kubernetes.io/part-of: flux
+            app.kubernetes.io/version: 0.16.2
+            control-plane: controller
           spec:
             replicas: 1
             selector:
@@ -872,7 +902,7 @@ spec:
                         valueFrom:
                           fieldRef:
                             fieldPath: metadata.namespace
-                    image: ghcr.io/fluxcd/source-controller:v0.15.3
+                    image: ghcr.io/fluxcd/source-controller:v0.15.4
                     imagePullPolicy: IfNotPresent
                     livenessProbe:
                       httpGet:
