@@ -95,7 +95,7 @@ metadata:
           }
         },
         {
-          "apiVersion": "kustomize.toolkit.fluxcd.io/v1beta1",
+          "apiVersion": "kustomize.toolkit.fluxcd.io/v1beta2",
           "kind": "Kustomization",
           "metadata": {
               "name": "podinfo",
@@ -321,7 +321,7 @@ spec:
       - name: kustomizations.kustomize.toolkit.fluxcd.io
         displayName: Kustomization
         kind: Kustomization
-        version: v1beta1
+        version: v1beta2
         description: Kustomization
       - name: providers.notification.toolkit.fluxcd.io
         displayName: Provider
@@ -413,6 +413,10 @@ spec:
     ### Network Policies
 
     If you're using a CNI that requires network policies, you may need to [add Flux's policies](https://github.com/fluxcd/flux2/tree/main/manifests/policies).
+
+    ### Breaking change
+
+    Please note that Flux v2 0.18.x ships with v1beta2 of the kustomize.toolkit.fluxcd.io/Kustomization CRD.
 
   displayName: Flux
   icon:
