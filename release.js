@@ -11,6 +11,9 @@ const version = process.argv[3]
 const file = fs.readFileSync(manifestFileName, "utf8")
 const documents = YAML.parseAllDocuments(file)
 
+// containerImage for CSV
+const SOURCE_CONTROLLER_IMAGE = "ghcr.io/fluxcd/source-controller:v0.16.1"
+
 const kindMap = {
   Role: "role",
   RoleBinding: "rolebinding",
@@ -92,7 +95,7 @@ documents
 // Update ClusterServiceVersion
 csv.spec.install.spec.deployments = deployments
 csv.metadata.name = `flux.v${version}`
-csv.metadata.annotations.containerImage = "ghcr.io/fluxcd/source-controller:v0.16.0"
+csv.metadata.annotations.containerImage = SOURCE_CONTROLLER_IMAGE
 csv.spec.version = version
 csv.spec.minKubeVersion = "1.18.0"
 csv.spec.maturity = "stable"
