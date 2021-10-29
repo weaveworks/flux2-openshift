@@ -12,7 +12,7 @@ const file = fs.readFileSync(manifestFileName, "utf8")
 const documents = YAML.parseAllDocuments(file)
 
 // containerImage for CSV
-const SOURCE_CONTROLLER_IMAGE = "ghcr.io/fluxcd/source-controller:v0.16.1"
+const SOURCE_CONTROLLER_IMAGE = "ghcr.io/fluxcd/source-controller:v0.17.0"
 
 const kindMap = {
   Role: "role",
@@ -99,6 +99,21 @@ csv.metadata.annotations.containerImage = SOURCE_CONTROLLER_IMAGE
 csv.spec.version = version
 csv.spec.minKubeVersion = "1.18.0"
 csv.spec.maturity = "stable"
+csv.spec.customresourcedefinitions.owned = []
+
+crds.forEach((crd) => {
+  crd.spec.versions.forEach((v) => {
+    csv.spec.customresourcedefinitions.owned.push({
+      name: crd.metadata.name,
+      displayName: crd.spec.names.kind,
+      kind: crd.spec.names.kind,
+      version: v.name,
+      description: crd.spec.names.kind,
+    })
+  })
+})
+
+/*
 csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
   name: crd.metadata.name,
   displayName: crd.spec.names.kind,
@@ -106,6 +121,7 @@ csv.spec.customresourcedefinitions.owned = crds.map((crd) => ({
   version: crd.spec.versions[crd.spec.versions.length-1].name,
   description: crd.spec.names.kind,
 }))
+*/
 // TODO: try to remove the replaces requirements
 // figure out which version is its predecessor
 // const versions = glob

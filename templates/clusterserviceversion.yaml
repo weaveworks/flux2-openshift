@@ -279,7 +279,7 @@ spec:
     - name: Homepage
       url: https://fluxcd.io/
     - name: Documentation
-      url: https://toolkit.fluxcd.io/
+      url: https://fluxcd.io/docs/
     - name: Slack
       url: https://cloud-native.slack.com/messages/flux
     - name: Mailing List
