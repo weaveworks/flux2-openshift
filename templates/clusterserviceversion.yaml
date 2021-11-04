@@ -95,24 +95,6 @@ metadata:
           }
         },
         {
-          "apiVersion": "kustomize.toolkit.fluxcd.io/v1beta1",
-          "kind": "Kustomization",
-          "metadata": {
-              "name": "podinfo",
-              "namespace": "dev"
-          },
-          "spec": {
-              "interval": "5m",
-              "path": "./deploy/overlays/dev",
-              "prune": true,
-              "sourceRef": {
-                "kind": "GitRepository",
-                "name": "podinfo"
-              },
-              "timeout": "2m"
-          }
-        },
-        {
           "apiVersion": "kustomize.toolkit.fluxcd.io/v1beta2",
           "kind": "Kustomization",
           "metadata": {
