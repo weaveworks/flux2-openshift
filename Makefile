@@ -9,5 +9,5 @@ opm-index:
 
 test: generate opm-index
 	yq e -i ".spec.startingCSV=\"flux.v$$(cat LATEST_VERSION)\"" \
-	test/004-operator-subscription.yaml \
+	test/004-operator-subscription.yaml
 	bash -x ./test.sh
