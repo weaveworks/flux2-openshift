@@ -1,8 +1,9 @@
+---
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: custom
-  namespace: flux-system
+  namespace: openshift-marketplace
 spec:
   displayName: custom
   description: custom

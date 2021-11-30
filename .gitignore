@@ -5,3 +5,5 @@ bundle_*
 community-operators/
 community-operators-prod/
 gotk-components.yaml
+flux/
+hyperflux/Dockerfile.test

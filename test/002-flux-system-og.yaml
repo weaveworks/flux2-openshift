@@ -1,3 +1,4 @@
+---
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
@@ -5,4 +6,4 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespaces:
-    - flux-system
+  - flux-system

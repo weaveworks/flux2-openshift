@@ -16,6 +16,10 @@ echo "Patch to remove fsGroup with Kustomize ..."
 # require kustomize 4.1.3
 kustomize build . > "$manifest"
 
+echo "Building hyperflux image ..."
+(cd hyperflux && make docker-build)
+
+# This is how we currently obtain the source-controller image from the GOTK file
 source_controller_image=$(yq e '.spec.template.spec.containers[].image' gotk-components.yaml | grep source)
 
 echo "Calling release js ..."
