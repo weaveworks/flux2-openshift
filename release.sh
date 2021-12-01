@@ -16,8 +16,10 @@ echo "Patch to remove fsGroup with Kustomize ..."
 # require kustomize 4.1.3
 kustomize build . > "$manifest"
 
+source_controller_image=$(yq e '.spec.template.spec.containers[].image' gotk-components.yaml | grep source)
+
 echo "Calling release js ..."
-./release.js "$manifest" "$version"
+./release.js "${manifest}" "${version}" "${source_controller_image}"
 
 echo "Bundle with operator-sdk ..."
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
