@@ -12,7 +12,7 @@ const file = fs.readFileSync(manifestFileName, "utf8")
 const documents = YAML.parseAllDocuments(file)
 
 // containerImage for CSV
-const SOURCE_CONTROLLER_IMAGE = "ghcr.io/fluxcd/source-controller:v0.18.0"
+const SOURCE_CONTROLLER_IMAGE = process.argv[4]
 
 const kindMap = {
   Role: "role",
