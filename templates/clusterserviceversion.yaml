@@ -415,9 +415,15 @@ spec:
 
     If you're using a CNI that requires network policies, you may need to [add Flux's policies](https://github.com/fluxcd/flux2/tree/main/manifests/policies).
 
-    ### Breaking change
+    ### Breaking Changes
 
-    Please note that Flux v2 0.18.x ships with v1beta2 of the kustomize.toolkit.fluxcd.io/Kustomization CRD.
+    - Flux 0.18.x ships with v1beta2 of the kustomize.toolkit.fluxcd.io/Kustomization CRD.
+    - Flux 0.25.x is the last Flux release where Kubernetes 1.19 is supported.
+
+    ### Flux on OpenShift Use Cases
+
+    - [The GitOps with Flux + OpenShift](https://www.youtube.com/watch?v=8ybCtNVP5To) talk by Andrew Block (Red Hat) showing how to setup multi-tenacy on OpenShift using Flux.
+    - [Flux OpenShift Use Case](https://fluxcd.io/docs/use-cases/openshift/) on FluxCD.io
 
   displayName: Flux
   icon:
