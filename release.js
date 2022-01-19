@@ -50,9 +50,6 @@ const csv = YAML.parse(
   fs.readFileSync("./templates/clusterserviceversion.yaml", "utf-8")
 )
 
-// CK: removed ServiceAccount becase it recently broke Kiwi test
-// case "ServiceAccount":
-
 const deployments = []
 const crds = []
 documents
@@ -82,6 +79,9 @@ documents
         crds.push(o)
         const crdFileName = `${o.spec.names.singular}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${crdFileName}`, YAML.stringify(o))
+        break
+      case "ServiceAccount":
+        // CK: removed ServiceAccount because it's recently broke the Kiwi test
         break
       default:
         console.warn(
