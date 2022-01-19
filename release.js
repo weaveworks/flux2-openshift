@@ -49,6 +49,10 @@ fs.writeFileSync(`${metadataDir}/annotations.yaml`, YAML.stringify(annotations))
 const csv = YAML.parse(
   fs.readFileSync("./templates/clusterserviceversion.yaml", "utf-8")
 )
+
+// CK: removed ServiceAccount becase it recently broke Kiwi test
+// case "ServiceAccount":
+
 const deployments = []
 const crds = []
 documents
@@ -63,7 +67,6 @@ documents
       case "ClusterRoleBinding":
       case "ClusterRole":
       case "Service":
-      case "ServiceAccount":
         const filename = `${o.metadata.name}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${filename}`, YAML.stringify(o))
         break
