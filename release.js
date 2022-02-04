@@ -101,7 +101,7 @@ csv.spec.install.spec.deployments = deployments
 csv.metadata.name = `flux.v${version}`
 csv.metadata.annotations.containerImage = SOURCE_CONTROLLER_IMAGE
 csv.spec.version = version
-csv.spec.minKubeVersion = "1.20.0"
+csv.spec.minKubeVersion = "1.19.0"
 csv.spec.maturity = "stable"
 csv.spec.customresourcedefinitions.owned = []
 
