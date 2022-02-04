@@ -504,6 +504,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - anyuid
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: kustomize-controller
         - rules:
           - apiGroups:
@@ -577,6 +585,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - anyuid
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: helm-controller
         - rules:
           - apiGroups:
@@ -650,6 +666,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - privileged
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: source-controller
         - rules:
           - apiGroups:
@@ -723,6 +747,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - privileged
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: notification-controller
         - rules:
           - apiGroups:
@@ -796,6 +828,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - privileged
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: image-reflector-controller
         - rules:
           - apiGroups:
@@ -869,6 +909,14 @@ spec:
               - update
               - patch
               - delete
+          - apiGroups:
+              - security.openshift.io
+            resourceNames:
+              - privileged
+            resources:
+              - securitycontextconstraints
+            verbs:
+              - use
           serviceAccountName: image-automation-controller
       deployments:
         - name: source-controller
