@@ -360,9 +360,9 @@ spec:
     - Seamless integration with Git providers (GitHub, GitLab, Bitbucket)
     - Interoperability with Cluster API (CAPI) providers
 
-    ### Optional Steps for OpenShift on AWS
+    ### Steps to support bootstraping with Flux CLI
 
-    Security Context with fsGroup=1337 is required to allow controller pods to connect to a certain list of AWS services.
+    SecComp Profile should be removed as it requires a special privilege to get the access.
     To do so, please specifiy a patch for gotk-components.yaml using the following Kustomization file, for example.
 
     ```yaml
@@ -371,7 +371,7 @@ spec:
     resources:
     - gotk-components.yaml
     patches:
-      - patch: |-
+      - patch: |
           apiVersion: apps/v1
           kind: Deployment
           metadata:
@@ -379,37 +379,32 @@ spec:
           spec:
             template:
               spec:
-                securityContext:
-                  fsGroup: 1337
+                containers:
+                  - name: manager
+                    securityContext:
+                      runAsUser: 65534
+                      seccompProfile:
+                        $patch: delete
         target:
           kind: Deployment
+          labelSelector: app.kubernetes.io/part-of=flux
     ```
 
-    Then before installing Flux, please also perform the following steps to bind Flux to the `privileged` SecurityContextConstraint (SCC). This applies to installation via OC's OLM or via flux CLI.
+    Then before installing Flux, please also perform the following steps to bind Flux to the `nonroot` SecurityContextConstraint (SCC). This applies to installation via OC's OLM or via Flux CLI.
 
     ```sh
     # replace default "flux-system" with the project/namespace name for your flux installation
     namespace="flux-system"
-    oc adm policy add-scc-to-user privileged system:serviceaccount:$namespace:source-controller
-    oc adm policy add-scc-to-user privileged system:serviceaccount:$namespace:kustomize-controller
-    oc adm policy add-scc-to-user privileged system:serviceaccount:$namespace:image-automation-controller
-    oc adm policy add-scc-to-user privileged system:serviceaccount:$namespace:image-reflector-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:source-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:kustomize-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:helm-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:notification-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:image-automation-controller
+    oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:image-reflector-controller
 
     ```
 
     If you've already installed Flux, you might need to uninstall it after applying the above pre-requisite steps.
-
-    If you want to narrow down permission scope even further than the `privileged` (SCC), you will need to create an SCC with fsGroup permissions as shown below and bind it to the same service accounts above.
-    Note: these permissions might change over time and it's safer to use the privileged SCC to prevent any upgrade issues
-
-    ```yaml
-    kind: SecurityContextConstraints
-    apiVersion: v1
-    metadata:
-      name: scc-flux
-    fsGroup:
-      type: RunAsAny
-    ```
 
     ### Network Policies
 
@@ -507,7 +502,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - anyuid
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:
@@ -588,7 +583,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - anyuid
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:
@@ -669,7 +664,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - privileged
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:
@@ -750,7 +745,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - privileged
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:
@@ -831,7 +826,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - privileged
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:
@@ -912,7 +907,7 @@ spec:
           - apiGroups:
               - security.openshift.io
             resourceNames:
-              - privileged
+              - nonroot
             resources:
               - securitycontextconstraints
             verbs:

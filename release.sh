@@ -26,5 +26,5 @@ echo "Bundle with operator-sdk ..."
 operator-sdk bundle validate --select-optional name=operatorhub --verbose "flux/$version"
 
 echo "Clean up ..."
-rm gotk-components.yaml
+# rm gotk-components.yaml
 rm "$manifest"
