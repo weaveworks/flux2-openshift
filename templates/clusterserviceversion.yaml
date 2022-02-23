@@ -363,13 +363,17 @@ spec:
     ### Steps to support bootstraping with Flux CLI
 
     SecComp Profile should be removed as it requires a special privilege to get the access.
-    To do so, please specifiy a patch for gotk-components.yaml using the following Kustomization file, for example.
+    Also, it requires to enforce `runUserAs` to the same UID provided by the images to prevent OpenShift
+    to alter the user id expected by our controllers.
+
+    To do so, please specifiy a patch using the following Kustomization file, for example.
 
     ```yaml
     apiVersion: kustomize.config.k8s.io/v1beta1
     kind: Kustomization
     resources:
-    - gotk-components.yaml
+      - gotk-components.yaml
+      - gotk-sync.yaml
     patches:
       - patch: |
           apiVersion: apps/v1
@@ -403,6 +407,8 @@ spec:
     oc adm policy add-scc-to-user nonroot system:serviceaccount:$namespace:image-reflector-controller
 
     ```
+
+    To see complete steps please refer to this [documentation](https://github.com/fluxcd/website/blob/main/content/en/docs/use-cases/openshift.md).
 
     If you've already installed Flux, you might need to uninstall it after applying the above pre-requisite steps.
 
