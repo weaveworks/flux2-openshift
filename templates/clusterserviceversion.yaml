@@ -260,17 +260,17 @@ metadata:
     certified: "false"
     description: |-
       Flux is a Continuous Delivery solution for Kubernetes.
-    support: FluxCD Community
+    support: The Flux community
     operatorframework.io/suggested-namespace: flux-system
 spec:
   version: 0.2.2
   maturity: alpha
-  keywords: ["flux", "ci", "continuous delivery", "fluxcd", "helm", "kustomize"]
+  keywords: ["flux", "gitops", "cd", "continuous delivery", "fluxcd", "helm", "kustomize"]
   maintainers:
-    - name: fluxcd
+    - name: The Flux maintainers
       email: cncf-flux-dev@lists.cncf.io
   provider:
-    name: fluxcd
+    name: The Flux project
   labels:
     name: flux
   selector:
