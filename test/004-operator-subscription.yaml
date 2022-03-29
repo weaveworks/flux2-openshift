@@ -6,6 +6,6 @@ metadata:
 spec:
   channel: stable
   name: flux
-  startingCSV: flux.v0.28.3
+  startingCSV: flux.v0.28.4
   source: custom
   sourceNamespace: flux-system
