@@ -268,7 +268,7 @@ spec:
   keywords: ["flux", "gitops", "cd", "continuous delivery", "fluxcd", "helm", "kustomize"]
   maintainers:
     - name: The Flux maintainers
-      email: cncf-flux-dev@lists.cncf.io
+      email: support@weave.works
   provider:
     name: The Flux project
   labels:
