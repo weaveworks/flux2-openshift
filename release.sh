@@ -8,7 +8,7 @@ echo "Generating the manifests using the built CLI ..."
 manifest="manifests-$version.yaml"
 
 echo "Exporting gotk-components.yaml ..."
-docker run --rm -it ghcr.io/fluxcd/flux-cli:v${version} install --version="$version" \
+docker run --rm -it ghcr.io/fluxcd/flux-cli:v${version} install --version="v$version" \
   --components-extra=image-reflector-controller,image-automation-controller \
   --export > gotk-components.yaml
 
