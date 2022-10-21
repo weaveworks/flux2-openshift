@@ -1,9 +1,13 @@
 # make release
 # make opm-index
 
-ekz create cluster
+kind create cluster
 
-operator-sdk olm install
+#force use olm 0.21.2 until 0.22 is verified with Flux
+operator-sdk olm install --version 0.21.2
+
+# To use latest olm release, remove --version 0.21.2 from line 8
+# operator-sdk olm install
 
 ls -d test/* | xargs -I{} kubectl apply -f {}
 
