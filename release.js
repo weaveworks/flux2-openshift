@@ -23,6 +23,7 @@ const kindMap = {
   Service: "service",
   ClusterRole: "clusterrole",
   ServiceAccount: "serviceaccount",
+  NetworkPolicy: "networkpolicy",
 }
 
 // setup directory for new version
@@ -55,7 +56,7 @@ const crds = []
 documents
   .filter((d) => d.contents)
   .map((d) => YAML.parse(String(d)))
-  .filter((o) => o.kind !== "NetworkPolicy" && o.kind !== "Namespace") // not supported by operator-sdk
+  .filter((o) => o.kind !== "Namespace") 
   .map((o) => {
     delete o.metadata.namespace
     switch (o.kind) {
@@ -65,6 +66,7 @@ documents
       case "ClusterRole":
       case "SecurityContextConstraints":
       case "Service":
+      case "NetworkPolicy":
         const filename = `${o.metadata.name}.${kindMap[o.kind]}.yaml`
         fs.writeFileSync(`${manifestsDir}/${filename}`, YAML.stringify(o))
         break
