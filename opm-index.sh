@@ -10,9 +10,9 @@ VERSION=$(cat LATEST_VERSION)
 list=""
 for i in $(ls -d flux/${VERSION}/ | xargs -I{} basename {}); do
   # docker build and push individual bundles
-  docker build -t quay.io/openshift-fluxv2-poc/flux-catalog:bundle-v"${i}" -f bundle.Dockerfile flux/"${i}"
-  docker push quay.io/openshift-fluxv2-poc/flux-catalog:bundle-v"${i}"
-  list="$list,quay.io/openshift-fluxv2-poc/flux-catalog:bundle-v$i"
+  docker build -t ghcr.io/weaveworks/openshift-fluxv2-catalog:bundle-v"${i}" -f bundle.Dockerfile flux/"${i}"
+  docker push ghcr.io/weaveworks/openshift-fluxv2-catalog:bundle-v"${i}"
+  list="$list,ghcr.io/weaveworks/openshift-fluxv2-catalog:bundle-v$i"
 done
 
 docker build -t opm -f Dockerfile.opm .
@@ -25,7 +25,7 @@ docker run --rm -it \
   opm:latest index add \
   --container-tool docker \
   --bundles "$list" \
-  --tag quay.io/openshift-fluxv2-poc/flux-index:latest
+  --tag ghcr.io/weaveworks/openshift-fluxv2-index:latest
 
 # push index
-docker push quay.io/openshift-fluxv2-poc/flux-index:latest
+docker push ghcr.io/weaveworks/openshift-fluxv2-index:latest
