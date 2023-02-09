@@ -414,7 +414,14 @@ spec:
 
     ### Network Policies
 
-    If you're using a CNI that requires network policies, you may need to [add Flux's policies](https://github.com/fluxcd/flux2/tree/main/manifests/policies).
+    This version of Flux is shipped without the normally provided network Policies.
+    By default all traffic is enabled, and anyone can access the source-controller
+    artifacts.
+
+    It is not recommended to run it in production as is.
+
+    Please visit [Flux's policies](https://github.com/fluxcd/flux2/tree/main/manifests/policies)
+    to deploy the needed network policies and secure your Flux setup.
 
     ### Breaking Changes
 
