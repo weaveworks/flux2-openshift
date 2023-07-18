@@ -55,7 +55,7 @@ const crds = []
 documents
   .filter((d) => d.contents)
   .map((d) => YAML.parse(String(d)))
-  .filter((o) => o.kind !== "NetworkPolicy" && o.kind !== "Namespace") // not supported by operator-sdk
+  .filter((o) => o.kind !== "NetworkPolicy" && o.kind !== "Namespace" && o.kind !== "ResourceQuota") // not supported by operator-sdk
   .map((o) => {
     delete o.metadata.namespace
     switch (o.kind) {
