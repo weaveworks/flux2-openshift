@@ -69,6 +69,10 @@ documents
         fs.writeFileSync(`${manifestsDir}/${filename}`, YAML.stringify(o))
         break
       case "Deployment":
+        // delete priorityClassName from deployment because the associated ResourceQuota is not supported
+        if (o.spec.template.spec.priorityClassName != null) {
+          delete o.spec.template.spec.priorityClassName
+        }
         let deployment = {
           name: o.metadata.name,
           label: o.metadata.labels,
@@ -101,7 +105,7 @@ csv.spec.install.spec.deployments = deployments
 csv.metadata.name = `flux.v${version}`
 csv.metadata.annotations.containerImage = SOURCE_CONTROLLER_IMAGE
 csv.spec.version = version
-csv.spec.minKubeVersion = "1.19.0"
+csv.spec.minKubeVersion = "1.24.0"
 csv.spec.maturity = "stable"
 csv.spec.customresourcedefinitions.owned = []
 
